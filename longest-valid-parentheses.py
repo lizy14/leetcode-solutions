@@ -5,44 +5,27 @@ class Solution(object):
         :rtype: int
         """
         
-        # i'm angry!
-        if len(s) == 15000:
-            return 2684
-        if len(s) == 17172:
-            return 0
+        '''
+        dynamic programming
+        a[i]: length of longest valid string ending at s[i]
         
-        length = len(s)
-        length_max = 0
+        ....((...))
+        -m-| |-l-|
+           kp    ji
+        '''
+        r = 0  # result
+        a = [0] * len(s)
         
-        # number of '(' minus number of ')'
-        p = []
-        q = [0] * length
-        counter = 0
         for i, c in enumerate(s):
-            counter += (1 if c == '(' else -1)
-            p.append(counter)
-
-        for l, lc in enumerate(s):
-            if lc != '(':
-                continue
-
-            largest_possible_r = l
-            
-            for i in range(l, length):
-                q[i] = p[i] - (p[l - 1] if l > 0 else 0)
-                if q[i] >= 0:
-                    largest_possible_r = i
-                else:
-                    break
-                
-            for r in range(largest_possible_r, l, -1):
-                if s[r] != ')':
+            if c == ')':
+                j = i - 1
+                l = a[j] if j >= 0 else 0
+                p = i - l - 1
+                if p < 0 or s[p] == ')':
                     continue
-                length_substring = r - l + 1
-                if length_substring <= length_max:
-                    break
-                if q[l] != q[r] + 1:
-                    continue
-                length_max = length_substring
-
-        return length_max
+                k = i - l - 2
+                m = a[k] if k >= 0 else 0
+                a[i] = m + l + 2
+                r = max(r, a[i])
+        
+        return r
