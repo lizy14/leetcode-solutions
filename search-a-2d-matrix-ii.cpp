@@ -1,37 +1,24 @@
 class Solution {
 public:
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
-        for(auto& row: matrix){
-            if(searchRowWrapped(row, target)){
-                return true;
-            }
-        }
-        return false;
-    }
-    bool searchRowWrapped(vector<int>& row, int target){
-        if(row.empty()){
+        int h = matrix.size();
+        if(h == 0){
             return false;
         }
-        int start = *row.begin();
-        int end = *(row.end() - 1);
-        if(start > target || end < target){
+        int w = matrix[0].size();
+        if(w == 0){
             return false;
         }
-        return searchRow(row, target);
-    }
-    bool searchRow(vector<int>& row, int target){
-        auto n = row.size();
-        if(n == 0){
-            return false;
-        }
-        int l = 0, r = n - 1;
-        while(l <= r){
-            int m = l + (r - l) / 2;
-            int x = row[m];
-            if(x > target){
-                r = m - 1;
-            }else if(x < target){
-                l = m + 1;
+        
+        int x = 0;
+        int y = h - 1;
+        
+        while(x < w && y >= 0){
+            int e = matrix[y][x];
+            if(e > target){
+                y --;
+            }else if(e < target){
+                x ++;
             }else{
                 return true;
             }
