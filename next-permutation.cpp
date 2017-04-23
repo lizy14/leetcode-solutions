@@ -2,39 +2,37 @@ class Solution {
 public:
     void nextPermutation(vector<int>& nums) {
         int n = nums.size();
-
+        
         int m = n - 1;
-        int last_digit = nums[n-1];
-        for(; m>=0; m--) {
-            int this_digit = nums[m];
-            if(this_digit < last_digit) {
-                    break;
+        // invariant: [m, n) in decreasing order
+        while(m > 0){
+            if(nums[m - 1] >= nums[m]){
+                m --;
+            }else{
+                break;
             }
-            last_digit = this_digit;
         }
-
-        // m-th to rightmost in decreasing order
-
-        if(m < 0) {
-            std::sort(nums.begin(), nums.end());
+        
+        if(m == 0){
+            std::reverse(nums.begin(), nums.end());
             return;
         }
-
-        int candidate = nums[m];
-
-        int s = -1;
-        for(int i=m+1; i<n; i++) {
-            if(nums[i] > candidate) {
-                s = i;
+        
+        int c = nums[m - 1];
+        
+        int s = nums[m]; // the smallest and last in [m, n) to > c
+        int k = m; // subscript of s
+        
+        for(int i = m + 1; i < n; i ++){
+            auto a = nums[i];
+            if(a > c && a <= s){
+                s = a;
+                k = i;
             }
         }
-
-        // s-th: smallest to be greater than
-
-        std::swap(nums[m], nums[s]);
-
-        std::sort(nums.begin() + m + 1, nums.end());
-
+        
+        std::swap(nums[k], nums[m - 1]);
+        std::reverse(nums.begin() + m, nums.end());
         return;
     }
 };
