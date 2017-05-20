@@ -7,10 +7,8 @@ private:
     int countBits(int x){
         int sum = 0;
         while(x){
-            if(x&1){
-                sum ++;
-            }
-            x >>= 1;
+            sum ++;
+            x &= (x-1);
         }
         return sum;
     }
