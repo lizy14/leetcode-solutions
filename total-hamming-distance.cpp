@@ -1,6 +1,24 @@
 class Solution {
+    const static int numberOfBits = sizeof(int) * 8;
 public:
     int totalHammingDistance(vector<int>& nums) {
+        int sum = 0;
+        int n = nums.size();
+        for(int i = 0; i < numberOfBits; ++i){
+            int mask = 1 << i;
+            int c = 0; // total number of 1 at i-th bit
+            for(auto num: nums){
+                int bit = (num & mask) >> i;
+                c += bit;
+            }
+            // c 1's and (n-c) 0's
+            sum += c * (n-c);
+        }
+        return sum;
+    }
+
+public:
+    int totalHammingDistanceNaive(vector<int>& nums) {
         int sum = 0;
         for(auto x: nums){
             for(auto y: nums){
