@@ -1,7 +1,7 @@
 class Solution {
 public:
     string frequencySort(string s) {
-        vector<int> counter(256); // map from char
+        int counter[sizeof(char) * 256] = {0}; // unordered_map<char, int>
         for(auto c: s) {
             counter[c] ++;
         }
