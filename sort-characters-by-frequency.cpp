@@ -1,7 +1,7 @@
 class Solution {
 public:
     string frequencySort(string s) {
-        map<char, int> counter;
+        vector<int> counter(256); // map from char
         for(auto c: s) {
             counter[c] ++;
         }
