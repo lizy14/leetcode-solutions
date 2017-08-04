@@ -1,33 +1,58 @@
-class MedianFinder {
-    
-    vector<int> values;
-    bool dirty = true;
-    double median;
-    
-public:
-    /** initialize your data structure here. */
-    MedianFinder() {
+class MaxHeap : priority_queue<int>{
+    public:
+        inline int Top(){
+            return top();
+        }
+        inline void Push(int num){
+            push(num);
+        }
+        inline void Pop(){
+            pop();
+        }
+        inline int Size(){
+            return size();
+        }
+};
+
+class MinHeap : priority_queue<int>{
+    public:
+        inline int Top(){
+            return - top();
+        }
+        inline void Push(int num){
+            push(- num);
+        }
+        inline void Pop(){
+            pop();
+        }
+        inline int Size(){
+            return size();
+        }
         
-    }
+};
+
+class MedianFinder {
+    MaxHeap small;
+    MinHeap large;
+public:
     
     void addNum(int num) {
-        auto it = lower_bound(values.begin(), values.end(), num);
-        values.insert(it, num);
+        small.Push(num);
+        large.Push(small.Top());
+        small.Pop();
+        if(large.Size() > small.Size()){
+            small.Push(large.Top());
+            large.Pop();
+        }
     }
     
     double findMedian() {
-        int n = values.size();
-        if(n % 2 == 1){
-            median = values[n / 2];
+        if(large.Size() == small.Size()){
+            return (small.Top() + large.Top()) / 2.;
         }else{
-            auto a = values[n / 2 - 1];
-            auto b = values[n / 2];
-            median = a + (b - a) / 2.;
-        }            
-        return median;
+            return small.Top();
+        }
     }
-    
-
 };
 
 /**
